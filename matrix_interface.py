@@ -53,8 +53,8 @@ def input_matrix():
 
 def set_size(width, height, gui):
     # convert from input boxes to ints
-    width = int(width.get().strip())
-    height = int(height.get().strip())
+    
+    
 
     matrix_inputs = [[None for i in range(height)] for ii in range(width)]
     for x in range(width):
@@ -62,14 +62,18 @@ def set_size(width, height, gui):
             matrix_inputs[x][y] = Entry(gui)
             matrix_inputs[x][y].grid(row=y+4, column=x)
 
+def set_size_setup(width, height, gui):
+    clear_inputs()
+    
+    width = int(width.get().strip())
+    height = int(height.get().strip())
+    set_size()
 
 def main():
-    
-
     master = Tk()
     Label(master, text='rows').grid(row=0)
     Label(master, text='column').grid(row=1)
-    ok = Button(master, text="ok", command=lambda: set_size(width, height, master))
+    ok = Button(master, text="ok", command=lambda: set_size_setup(width, height, master))
     ok.grid(row=3)
     width = Entry(master)
     width.grid(row=0, column=1)

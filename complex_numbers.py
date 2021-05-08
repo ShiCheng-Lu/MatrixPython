@@ -1,7 +1,16 @@
 
 # a module to handle complex number operations
 class Complex():
+    '''
+    Complex(real, img)
 
+    Attributes
+    ==========
+    real : num
+        the real part of the Complex number
+    img : num
+        the imaginary part of the Complex number
+    '''
     def __init__(self, real, img):
         super().__init__()
         self.real = real
