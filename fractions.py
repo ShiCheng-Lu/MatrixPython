@@ -7,7 +7,6 @@ class Fraction():
     
     def __add__(self, other):
         denom = self.denom.lcm(other.denom)
-        
     
     def __sub__(self, other):
         pass

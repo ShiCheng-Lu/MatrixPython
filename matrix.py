@@ -1,6 +1,3 @@
-from complex_numbers import *
-from fractions import *
-
 class Matrix():
 
     def __init__(self, row, column):
@@ -40,10 +37,8 @@ class Matrix():
     swap row1 and row2
     '''
     def ero1(self, row1, row2):
-        assert(row1 <= self.row_len)
-        assert(row1 > 0)
-        assert(row2 <= self.row_len)
-        assert(row2 > 0)
+        assert(row1 > 0 and row1 <= self.row_len)
+        assert(row2 > 0 and row2 <= self.row_len)
         assert(row1 != row2)
 
         data[row1], data[row2] = data[row2], data[row1] 
@@ -56,10 +51,8 @@ class Matrix():
             self.data[row][col] *= scale
     
     def ero3(self, row1, row2, scale):
-        assert(row1 <= self.row_len)
-        assert(row1 > 0)
-        assert(row2 <= self.row_len)
-        assert(row2 > 0)
+        assert(row1 > 0 and row1 <= self.row_len)
+        assert(row2 > 0 and row2 <= self.row_len)
         assert(row1 != row2)
 
         for col in range(self.col_len):
@@ -102,57 +95,3 @@ class Matrix():
             current_row += 1
         
         # to RREF
-    
-
-def str_to_complex_frac(string):
-    if ("i" in string):
-        pos = 1
-        #something
-        if (string.startswith("-")):
-            string = string.strip("-")
-            pos = -1
-        #split into real and imaginary
-        if ("+" in string):
-            r_i = string.split("+")
-        else:
-            r_i = string.split("-")
-        # real part
-        if ("/" in r_i[0]):
-            n = r_i[0].split("/")
-            real = Fraction(int(n[0]) * pos, int(n[1]))
-        else:
-            real = Fraction(int(r_i[0]) * pos)
-        # imaginary part
-        if ("/" in r_i[1]):
-            n = r_i[1].split("/")
-            img = Fraction(int(n[0]) * pos, int(n[1]))
-        else:
-            img = Fraction(int(r_i[1]) * pos)
-    else:
-        if ("/" in string):
-            n = string.split("/")
-            real = Fraction(int(n[0]), int(n[1]))
-        else:
-            real = Fraction(int(string))
-        img = 0
-    
-    return Complex(real, img)
-            
-
-
-def input_matrix():
-    data = []
-    row = input()
-    while (row != ''):
-        row_data = []
-        for num in row.split(" "):
-            row_data.append(str_to_complex_frac(num))
-        data.append(row_data)
-        row = input()
-    return Matrix(data)
-
-
-a = input_matrix()
-b = input_matrix()
-
-print(a * b)
