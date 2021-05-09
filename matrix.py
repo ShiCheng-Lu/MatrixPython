@@ -4,7 +4,7 @@ class Matrix():
 
     create a (row)x(column) matrix
     
-    Properties
+    Attributes
     ==========
     row : int
         the number of rows this Matrix has
@@ -18,7 +18,7 @@ class Matrix():
         super().__init__()
         self.row = row
         self.col = column
-        self.data = [[0 for x in column] for y in row]
+        self.data = [[0 for x in range(column)] for y in range(row)]
 
     def __str__(self):
         result_str = ""
@@ -39,6 +39,7 @@ class Matrix():
                     # result is the sum of dot multiply between self (row) and other (column)
                     for i in range(1, self.col):
                         data[row][col] += self.data[row][i] * other.data[i][col]
+            self = result
             return result
         
         else:
@@ -47,25 +48,30 @@ class Matrix():
                     self.data[row][col] *= other
             return self
     
+    def get(self, x, y):
+        return self.data[y][x]
+
+    def set(self, x, y, value):
+        self.data[y][x] = value
     
     def ero1(self, row1, row2):
         '''
         M.ero1(row1 : int, row2 : int)
         swap row1 and row2
         '''
-        assert(row1 > 0 and row1 <= self.row_len)
-        assert(row2 > 0 and row2 <= self.row_len)
-        assert(row1 != row2)
+        # assert((row1 > 0) and (row1 <= self.row_len))
+        # assert((row2 > 0) and (row2 <= self.row_len))
+        # assert(row1 != row2)
 
-        data[row1], data[row2] = data[row2], data[row1] 
+        self.data[row1], self.data[row2] = self.data[row2], self.data[row1] 
 
     def ero2(self, row, scale):
         '''
         M.ero2(row1 : int, scale : num)
         scale row1 by a scale factor
         '''
-        assert(row <= self.row_len)
-        assert(row > 0)
+        # assert(row <= self.row_len)
+        # assert(row > 0)
 
         for col in range(self.col):
             self.data[row][col] *= scale
@@ -75,9 +81,9 @@ class Matrix():
         M.ero3(row1 : int, row2 : int, scale : num)
         add to row1 by a scaled value of row2
         '''
-        assert(row1 > 0 and row1 <= self.row_len)
-        assert(row2 > 0 and row2 <= self.row_len)
-        assert(row1 != row2)
+        # assert((row1 > 0) and (row1 <= self.row_len))
+        # assert((row2 > 0) and (row2 <= self.row_len))
+        # assert(row1 != row2)
 
         for col in range(self.col):
             self.data[row1][col] += self.data[row2][col] * scale

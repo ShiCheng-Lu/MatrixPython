@@ -2,13 +2,12 @@
 # a module to handle complex number operations
 class Complex():
     '''
-    Complex(real, img)
+    Complex(real, img) a representation for complex numbers
 
-    Attributes
-    ==========
-    real : num
+    C.real : num
         the real part of the Complex number
-    img : num
+    
+    C.img : num
         the imaginary part of the Complex number
     '''
     def __init__(self, real, img):
@@ -54,9 +53,14 @@ class Complex():
         else:
             return "{}{}i".format(str(self.real), str(self.img))
     
+    def __round__(self, ndigits):
+        return Complex(round(self.real, ndigits), round(self.img, ndigits))
     '''
     C.conjugate()
     return the conjugate of the complex number
     '''
     def conjugate(self):
         return Complex(self.real, self.img * -1)
+    
+    def invert(self):
+        return Complex(1, 0) / self
