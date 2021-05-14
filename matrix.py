@@ -1,10 +1,12 @@
+from complex_numbers import *
+
 class Matrix():
     '''
     Matrix(row : int, column : int)
 
     create a (row)x(column) matrix
     
-    Properties
+    Attributes
     ==========
     row : int
         the number of rows this Matrix has
@@ -18,7 +20,7 @@ class Matrix():
         super().__init__()
         self.row = row
         self.col = column
-        self.data = [[0 for x in column] for y in row]
+        self.data = [[0 for x in range(column)] for y in range(row)]
 
     def __str__(self):
         result_str = ""
@@ -30,15 +32,17 @@ class Matrix():
 
     def __mul__(self, other):
         if (type(other) == Matrix):
-            assert (self.col_len == other.row_len)
-            result = Matrix(self.row, other.col_len)
+            if (self.col != other.row):
+                raise "incompatable matrix"
+            result = Matrix(self.row, other.col)
 
             data = [[0 for x in other.col_len] for y in self.row]
-            for row in range(self.row):
-                for col in range(other.col_len):
+            for x in range(self.row):
+                for y in range(other.col):
                     # result is the sum of dot multiply between self (row) and other (column)
                     for i in range(1, self.col):
-                        data[row][col] += self.data[row][i] * other.data[i][col]
+                        data[x][y] += self.data[x][i] * other.data[i][y]
+            self = result
             return result
         
         else:
@@ -47,25 +51,30 @@ class Matrix():
                     self.data[row][col] *= other
             return self
     
+    def get(self, x, y):
+        return self.data[y][x]
+
+    def set(self, x, y, value):
+        self.data[y][x] = value
     
     def ero1(self, row1, row2):
         '''
         M.ero1(row1 : int, row2 : int)
         swap row1 and row2
         '''
-        assert(row1 > 0 and row1 <= self.row_len)
-        assert(row2 > 0 and row2 <= self.row_len)
-        assert(row1 != row2)
+        # assert((row1 > 0) and (row1 <= self.row_len))
+        # assert((row2 > 0) and (row2 <= self.row_len))
+        # assert(row1 != row2)
 
-        data[row1], data[row2] = data[row2], data[row1] 
+        self.data[row1], self.data[row2] = self.data[row2], self.data[row1] 
 
     def ero2(self, row, scale):
         '''
         M.ero2(row1 : int, scale : num)
         scale row1 by a scale factor
         '''
-        assert(row <= self.row_len)
-        assert(row > 0)
+        # assert(row <= self.row_len)
+        # assert(row > 0)
 
         for col in range(self.col):
             self.data[row][col] *= scale
@@ -75,9 +84,9 @@ class Matrix():
         M.ero3(row1 : int, row2 : int, scale : num)
         add to row1 by a scaled value of row2
         '''
-        assert(row1 > 0 and row1 <= self.row_len)
-        assert(row2 > 0 and row2 <= self.row_len)
-        assert(row1 != row2)
+        # assert((row1 > 0) and (row1 <= self.row_len))
+        # assert((row2 > 0) and (row2 <= self.row_len))
+        # assert(row1 != row2)
 
         for col in range(self.col):
             self.data[row1][col] += self.data[row2][col] * scale
@@ -95,7 +104,6 @@ class Matrix():
         print("(" + output_str + ")")
     
     def rref(self):
-        # to REF
         current_row = 0
         for pivot in range(self.col):
             #find the first row that doesn't start with 0
@@ -110,13 +118,55 @@ class Matrix():
                 # no pivot for this column, skip to next column
                 continue
 
-            # scale everything else to 0
+            # scale all other rows to 0 in the pivot column
+            # this also takes the matrix to RREF
             for i in range(0, self.row):
                 if (i != current_row):
                     scale_factor = self.data[i][pivot] / self.data[current_row][pivot]
 
-                    for col in range(pivot, self.col):
-                        self.data[i][col] = self.data[i][col] - self.data[current_row][col] * scale_factor
+                    self.ero3(i, pivot, -scale_factor)
             current_row += 1
+        return self
+
+    
+    def inverse(self):
+        if (self.row != self.col):
+            return false
+        inverse = Matrix(self.row, self.col)
+        for x in range(self.col):
+            for y in range(self.row):
+                inverse.data[x][y] = Complex(0)
+            inverse.data[x][x] = Complex(1)
         
-        # to RREF
+        current_row = 0
+        for pivot in range(self.col):
+            #find the first row that doesn't start with 0
+            for i in range(current_row, self.row):
+                if (self.data[i][pivot] != 0):
+                    # found a pivot
+                    self.ero1(i, current_row)
+                    inverse.ero1(i, current_row)
+
+                    scale = self.data[current_row][pivot].invert()
+
+                    self.ero2(current_row, scale)
+                    inverse.ero2(current_row, scale)
+
+                    self.print_row(current_row)
+                    break
+            else:
+                # no pivot for this column, skip to next column
+                continue
+
+            # scale all other rows to 0 in the pivot column
+            # this also takes the matrix to RREF
+            for i in range(0, self.row):
+                if (i != current_row):
+                    scale_factor = self.data[i][pivot] / self.data[current_row][pivot]
+
+                    self.ero3(i, pivot, -scale_factor)
+                    inverse.ero3(i, pivot, -scale_factor)
+
+            current_row += 1
+
+        return inverse
