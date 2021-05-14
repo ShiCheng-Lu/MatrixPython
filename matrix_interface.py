@@ -80,7 +80,7 @@ class MatrixInterface():
         for x in range(self.width):
             for y in range(self.height):
                 num = str(round(self.matrix.get(x, y), 5))
-                Label(gui, text=num).grid(row=y+20, column=x)
+                Label(self.gui, text=num).grid(row=y+20, column=x)
 
 def str_to_complex(string):
     if string == "":

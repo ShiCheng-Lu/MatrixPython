@@ -10,7 +10,7 @@ class Complex():
     C.img : num
         the imaginary part of the Complex number
     '''
-    def __init__(self, real, img):
+    def __init__(self, real, img=0):
         super().__init__()
         self.real = real
         self.img = img
@@ -55,6 +55,10 @@ class Complex():
     
     def __round__(self, ndigits):
         return Complex(round(self.real, ndigits), round(self.img, ndigits))
+
+    def __neg__(self):
+        return Complex(-self.real, -self.img)
+
     '''
     C.conjugate()
     return the conjugate of the complex number
